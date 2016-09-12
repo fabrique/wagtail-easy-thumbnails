@@ -52,13 +52,9 @@ image is used to determine the resulting width or height, respectively.
 
 Other options are only provided if the given functionality is required:
 
-- ``crop`` required to make the processor do anything. If not given, the normal
-    ``scale_and_crop`` processor is used. Options for crop are not supported for this processor.
-- ``zoom=<N>`` where N is an integer between 0 and 100 specifying how close
-    to the focal area the image is cropped. Default is 0, meaning as close to the outer image
-    boundaries as possible, 100 means as close to the focal area as possible.
-- ``upscale`` if given and the resulting image is smaller that the requested size,
-    the image is upscaled.
+- ``crop`` required to make the processor do anything. If not given, the normal ``scale_and_crop`` processor is used. Options for crop are not supported for this processor.
+- ``zoom=<N>`` where N is an integer between 0 and 100 specifying how close to the focal area the image is cropped. Default is 0, meaning as close to the outer image boundaries as possible, 100 means as close to the focal area as possible.
+- ``upscale`` if given and the resulting image is smaller that the requested size, the image is upscaled.
 
 If the wagtail image does not have a focal area defined, the normal ``scale_and_crop`` processor
 is used to generate the thumbnail.
@@ -67,7 +63,5 @@ Settings
 --------
 The following settings can be set to override the defaults
 
-- ``WAGTAIL_FOCAL_AREA_IMAGE_DEBUG``: Defaults to ``False``. If set to ``True``, the
-    focal area is drawn on the resulting image (useful for debugging).
-- ``WAGTAIL_THUMBNAIL_ALWAYS_RECREATE`` Defaults to ``False``. If set to ``True``, the
-    thumbnails are always regenerated, regardless of cached versions (useful for debugging)
+- ``WAGTAIL_FOCAL_AREA_IMAGE_DEBUG``: Defaults to ``False``. If set to ``True``, the focal area is drawn on the resulting image (useful for debugging).
+- ``WAGTAIL_THUMBNAIL_ALWAYS_RECREATE`` Defaults to ``False``. If set to ``True``, the thumbnails are always regenerated, regardless of cached versions (useful for debugging)
