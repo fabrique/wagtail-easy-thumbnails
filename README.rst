@@ -12,8 +12,10 @@ This will allow you to use easy_thumbnail's features that the thumbnailer in Wag
 does not provide, such as JPEG quality control per image, forcing images to JPEG and
 the powerful extension mechanism of custom processors.
 
-This is not a drop-in replacement for the wagtail image tag. Rather, you will use
-the normal easy_thumbnail tag in combination with a filter and a processor to work nicely with wagtail images.
+This is not a drop-in replacement for the wagtail image tag. Rather, you will need use
+the normal easy_thumbnail tag in combination with a filter and a processor to work nicely
+with wagtail images.
+
 
 Quick start
 -----------
@@ -38,13 +40,43 @@ Quick start
 3. Use in templates as follows::
 
     {% load thumbnail wagtail_thumbnail %}
-    <img src="{% thumbnail page.visual|wagtail_thumbnailer 300x100 %}" alt=""/>
+    <img src="{% thumbnail page.visual|wagtail_thumbnailer 300x100 crop zoom=100 %}" alt=""/>
+
+    <!--or-->
+
+    {% thumbnail page.visual|wagtail_thumbnailer 300x100 crop zoom=100 as cropped_image %}
+    <img src="{{ cropped_image.url }}"
+         width="{{ cropped_image.width }}"
+         height="{{ cropped_image.height }}"
+         alt=""/>
+
+
+4. Use in code as follows::
+
+    from easy_thumbnails.files import get_thumbnailer
+
+    ...
+
+    properties = {
+        'size': ...,
+        'crop': True,
+        'zoom': 100,
+    }
+    # image is the wagtail image (or subclass) instance
+    wrapped_image = WagtailThumbnailerImageFieldFile(wagtail_image=image)
+
+    # thumbnailer has the same properties as the template tag result, so .url, .width, etc.
+    thumnailer = get_thumbnailer(wrapped_image).get_thumbnail(properties)
+
 
 
 Thumbnail options
 -----------------
 
-The following options can be used to create the thumbnails.
+The following options can be used to create the thumbnails. Also see the `Easy Thumbnails documentation`__ for all thumbnailing options.
+
+__ http://easy-thumbnails.readthedocs.io/en/latest/index.html
+
 
 ``size`` is a required option, and defines the bounds that the generated image
 must fit within. If one of either width or height is 0, the ratio of the original
@@ -63,11 +95,20 @@ Other options are only provided if the given functionality is required:
 If the wagtail image does not have a focal area defined, the normal ``scale_and_crop`` processor
 is used to generate the thumbnail.
 
+
 Settings
 --------
-The following settings can be set to override the defaults
+The following settings can be set to override the defaults. Also see the `Easy Thumbnails documentation`__
+for all thumbnail settings.
+
+__ http://easy-thumbnails.readthedocs.io/en/latest/ref/settings/
 
 - ``WAGTAIL_FOCAL_AREA_IMAGE_DEBUG``: Defaults to ``False``. If set to ``True``, the
     focal area is drawn on the resulting image (useful for debugging).
 - ``WAGTAIL_THUMBNAIL_ALWAYS_RECREATE`` Defaults to ``False``. If set to ``True``, the
     thumbnails are always regenerated, regardless of cached versions (useful for debugging)
+
+
+License
+-------
+This software is released under the MIT License, see LICENSE.
