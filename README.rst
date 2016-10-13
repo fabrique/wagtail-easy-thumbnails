@@ -19,8 +19,11 @@ with wagtail images.
 
 Quick start
 -----------
+1. Install ``wagtail_easy_thumbnails`` from Pypi::
 
-1. Add ``wagtail_easy_thumbnails`` to your ``INSTALLED_APPS`` setting like this::
+    pip install wagtail_easy_thumbnails
+
+2. Add ``wagtail_easy_thumbnails`` to your ``INSTALLED_APPS`` setting like this::
 
     INSTALLED_APPS = (
         ...
@@ -28,7 +31,7 @@ Quick start
     )
 
 
-2. Add the following filters to to your ``EASYTHUMBNAIL_PROCESSORS`` setting like this::
+3. Add the following filters to to your ``EASYTHUMBNAIL_PROCESSORS`` setting like this::
 
     THUMBNAIL_PROCESSORS = (
         # use this one instead of normal scale_and_crop
@@ -37,7 +40,7 @@ Quick start
         ... other processors
     )
 
-3. Use in templates as follows::
+4. Use in templates as follows::
 
     {% load thumbnail wagtail_thumbnail %}
     <img src="{% thumbnail page.visual|wagtail_thumbnailer 300x100 crop zoom=100 %}" alt=""/>
@@ -51,7 +54,7 @@ Quick start
          alt=""/>
 
 
-4. Use in code as follows::
+5. Use in code as follows::
 
     from easy_thumbnails.files import get_thumbnailer
 
