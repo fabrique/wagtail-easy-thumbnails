@@ -20,7 +20,7 @@ setup(
     long_description=README,
     author='Robin van der Rijst - Fabrique',
     author_email='robinr@fabrique.nl',
-    url='https://github.org/fabrique/wagtail-easy-thumbnails',
+    url='https://github.com/fabrique/wagtail-easy-thumbnails',
     install_requires=[
             'wagtail>=1.5',
             'easy_thumbnails>=2.3',
