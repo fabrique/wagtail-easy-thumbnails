@@ -106,6 +106,15 @@ __ http://easy-thumbnails.readthedocs.io/en/latest/ref/settings/
 - ``WAGTAIL_THUMBNAIL_ALWAYS_RECREATE`` Defaults to ``False``. If set to ``True``, the thumbnails are always regenerated, regardless of cached versions (useful for debugging)
 
 
+Changes
+-------
+
+0.2 (2017-03-15)
+
+- Fixed github link in setup.py (thanks to reduxionist)
+- Fixed a bug where too much zoom was applied when focal area was smaller than target size
+- Some code cleanup
+
 License
 -------
 This software is released under the MIT License, see LICENSE.

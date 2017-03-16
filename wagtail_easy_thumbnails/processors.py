@@ -45,50 +45,48 @@ def wagtail_scale_and_crop_with_focal_area(im, size, crop=False, focal_area=None
         zoom = 0
 
     # from here on we have a focal area and cropping is on
-    source_x, source_y = [float(v) for v in im.size]
-    target_x, target_y = [float(v) for v in size]
+    source_width, source_height = [float(v) for v in im.size]
+    target_width, target_height = [float(v) for v in size]
 
-    # determine the scale (target_x or target_y can be 0)
-    scale = max(target_x / source_x, target_y / source_y)
+    # determine the scale (target_width or target_height can be 0)
+    scale = max(target_width / source_width, target_height / source_height)
 
     # Handle one-dimensional targets.
-    if not target_x:
-        target_x = source_x * scale
-    elif not target_y:
-        target_y = source_y * scale
+    if not target_width:
+        target_width = source_width * scale
+    elif not target_height:
+        target_height = source_height * scale
 
     focal_cx, focal_cy, focal_width, focal_height = focal_area
 
-    target_ratio = target_x / target_y
-    image_ratio = source_x / source_y
+    target_ratio = target_width / target_height
+    image_ratio = source_width / source_height
     focal_ratio = focal_width / focal_height
 
     # determine the width,height for the extreme zoom levels
-    zoom_0_width = round(min(source_y * target_ratio, source_y * image_ratio))
-    zoom_0_height = round(min(source_x / target_ratio, source_x / image_ratio))
+    zoom_0_width = round(min(source_height * target_ratio, source_height * image_ratio))
+    zoom_0_height = round(min(source_width / target_ratio, source_width / image_ratio))
 
     zoom_100_width = round(max(focal_height * target_ratio, focal_height * focal_ratio))
     zoom_100_height = round(max(focal_width / target_ratio, focal_width / focal_ratio))
 
-    # make sure full zoom is never larger than no zoom
+    max_zoom_ratio = 1
     if zoom_100_width > zoom_0_width or zoom_100_height > zoom_0_height:
-        zoomed_width = zoom_0_width
-        zoomed_height = zoom_0_height
-        zoom_ratio = 0
-    elif zoom_100_width < target_x or zoom_100_height < target_y:
+        # make sure full zoom is never larger than no zoom
+        max_zoom_ratio = 0
+    elif zoom_100_width < target_width or zoom_100_height < target_height:
         # max possible zoom should not be smaller than target size if possible
-        zoomed_width = min(target_x, zoom_0_width)
-        zoomed_height = min(target_y, zoom_0_height)
-        # could also use zoom height, shouldn't matter
-        zoom_ratio = 1 - (zoom_0_width - zoomed_width / (zoom_0_width - zoom_100_width))
-    else:
-        # determine zoomed_width and height for given zoom
-        zoom_ratio = zoom / 100
-        zoomed_width = -(zoom_ratio * (zoom_0_width - zoom_100_width) - zoom_0_width)
-        zoomed_height = -(zoom_ratio * (zoom_0_height - zoom_100_height) - zoom_0_height)
+        max_zoom_ratio_x = (zoom_0_width - target_width) / (zoom_0_width - zoom_100_width)
+        max_zoom_ratio_y = (zoom_0_height - target_height) / (zoom_0_height - zoom_100_height)
+        max_zoom_ratio = min(max_zoom_ratio_x, max_zoom_ratio_y)
 
-    # determine scale to get from zoomed_width to target_width
-    zoom_scale = target_x / zoomed_width
+    # determine zoomed_width and height for given zoom (at least zero)
+    zoom_ratio = max(0, min(zoom / 100, max_zoom_ratio))
+    zoomed_width = -(zoom_ratio * (zoom_0_width - zoom_100_width) - zoom_0_width)
+    zoomed_height = -(zoom_ratio * (zoom_0_height - zoom_100_height) - zoom_0_height)
+
+    # determine scale to get from zoomed_width to target_width (same as _height)
+    zoom_scale = target_width / zoomed_width
 
     if WAGTAIL_FOCAL_AREA_IMAGE_DEBUG:
         # draw focal area for debugging
@@ -120,18 +118,18 @@ def wagtail_scale_and_crop_with_focal_area(im, size, crop=False, focal_area=None
         # its out of the img to the left, move both to the right until tex is 0
         tfx = tfx - tex  # tex is negative!
         tex = 0
-    elif tfx > source_x:
+    elif tfx > source_width:
         # its out of the img to the right
-        tex = tex - (tfx - source_x)
-        tfx = source_x
+        tex = tex - (tfx - source_width)
+        tfx = source_width
     if tey < 0:
         # its out of the img to the top, move both to the bottom until tey is 0
         tfy = tfy - tey  # tey is negative!)
         tey = 0
-    elif tfy > source_y:
+    elif tfy > source_height:
         # its out of the img to the bottom
-        tey = tey - (tfy - source_y)
-        tfy = source_y
+        tey = tey - (tfy - source_height)
+        tfy = source_height
 
     # crop image
     crop_box = ((int(tex), int(tey), int(tfx), int(tfy)))
