@@ -71,7 +71,7 @@ def wagtail_scale_and_crop_with_focal_area(im, size, crop=False, focal_area=None
     zoom_100_height = round(max(focal_width / target_ratio, focal_width / focal_ratio))
 
     max_zoom_ratio = 1
-    if zoom_100_width > zoom_0_width or zoom_100_height > zoom_0_height:
+    if zoom_100_width >= zoom_0_width or zoom_100_height >= zoom_0_height:
         # make sure full zoom is never larger than no zoom
         max_zoom_ratio = 0
     elif zoom_100_width < target_width or zoom_100_height < target_height:
