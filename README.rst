@@ -109,6 +109,9 @@ __ http://easy-thumbnails.readthedocs.io/en/latest/ref/settings/
 Changes
 -------
 
+0.3 (2017-11-27)
+- Fixed division by zero error in exceptional situations (thanks to lucasmoeskops)
+
 0.2 (2017-03-15)
 
 - Fixed github link in setup.py (thanks to reduxionist)
