@@ -109,6 +109,11 @@ __ http://easy-thumbnails.readthedocs.io/en/latest/ref/settings/
 Changes
 -------
 
+
+0.4 (2025-08-29)
+
+- Added support for Pillow 10 (lucasmoeskops)
+
 0.3 (2017-11-27)
 
 - Fixed division by zero error in exceptional situations (thanks to lucasmoeskops)
