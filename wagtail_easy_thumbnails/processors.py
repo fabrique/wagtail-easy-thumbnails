@@ -138,7 +138,7 @@ def wagtail_scale_and_crop_with_focal_area(im, size, crop=False, focal_area=None
     # scale
     if zoom_scale < 1.0 or (zoom_scale > 1.0 and upscale):
         im = im.resize((int(zoomed_width * zoom_scale), int(zoomed_height * zoom_scale)),
-                       resample=Image.ANTIALIAS)
+                       resample=Image.LANCZOS)
 
     return im
 
